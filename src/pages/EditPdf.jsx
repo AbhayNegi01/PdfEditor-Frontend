@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import Button from "../components/Button";
 import InputFields from "../components/InputFields";
@@ -9,9 +10,32 @@ import {
   FaSave, 
   FaUpload 
 } from "react-icons/fa";
+import { usePdf } from '../hooks/usePdf';
+import { BsGear } from "react-icons/bs";
 
 const EditPdf = () => {
-  const { id } = useParams();
+  const {id} = useParams();
+  const [localFile, setLocalFile] = useState(null);
+
+  const {
+    loading,
+    fileName,
+    pdfUrl,
+    numPages,
+    currentPage,
+    setNumPages,
+    setCurrentPage,
+    setPdfUrl
+  } = usePdf(id, localFile);
+
+    const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file && file.type === "application/pdf") {
+      setLocalFile(file); // triggers `usePdf` to handle it
+    } else {
+      alert("Please select a valid PDF file.");
+    }
+  };
 
   return (
     <div className='flex flex-col min-h-screen bg-gray-200'>
@@ -19,23 +43,27 @@ const EditPdf = () => {
         <div className='container mx-auto flex flex-wrap items-center justify-between gap-4'>
           
           <div className='flex items-center space-x-4'>
-            <label 
-              htmlFor="file-upload"
-              className='cursor-pointer bg-blue-600 text-white font-medium px-4 py-2 rounded hover:bg-blue-700 transition duration-300 inline-flex items-center gap-2'
-            >
-              <FaUpload />
-              <span>Choose Pdf</span>
-            </label>
-            <input 
-              id="file-upload" 
-              type="file" 
-              accept=".pdf" 
-              className="hidden"
-            />
-
+            {!id && (
+              <>
+                <label 
+                  htmlFor="file-upload"
+                  className='cursor-pointer bg-blue-600 text-white font-medium px-4 py-2 rounded hover:bg-blue-700 transition duration-300 inline-flex items-center gap-2'
+                >
+                  <FaUpload />
+                  <span>Choose Pdf</span>
+                </label>
+                <input 
+                  id="file-upload" 
+                  type="file" 
+                  accept=".pdf"
+                  onChange={handleFileChange} 
+                  className="hidden"
+                />
+              </>
+            )}
             <div className='flex items-center text-gray-600 gap-2'>
               <FaFile />
-              <span className="truncate max-w-xs">No file selected</span>
+              <span className="truncate max-w-xs">{fileName}</span>
             </div>
           </div>
 
@@ -64,14 +92,28 @@ const EditPdf = () => {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row pt-4 gap-6">
-        <div className="md:w-1/2 lg:w-1/4">
-          <InputFields />
+      {loading && id ? (
+        <div className='flex justify-center items-center h-40'>
+          <BsGear className="h-20 w-20 animate-spin text-blue-300"/>
         </div>
-        <div className="md:w-3/4 bg-white rounded-lg p-6">
-          <PdfViewer />
+      ) : ( 
+        <div className="flex flex-col md:flex-row pt-4 gap-6">
+          <div className="md:w-1/2 lg:w-1/4">
+            <InputFields />
+          </div>
+          <div className="md:w-3/4 bg-white rounded-lg p-6">
+            <PdfViewer 
+              pdfId={id} 
+              pdfUrl={pdfUrl}
+              numPages={numPages}
+              currentPage={currentPage}
+              setNumPages={setNumPages}
+              setCurrentPage={setCurrentPage}
+              setPdfUrl={setPdfUrl}
+              />
+          </div>
         </div>
-      </div>
+      )}
 
     </div>
   )
