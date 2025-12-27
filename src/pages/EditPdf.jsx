@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../components/Button";
 import InputFields from "../components/InputFields";
 import { PreviewModal } from "../components";
@@ -33,6 +33,8 @@ const EditPdf = () => {
     generatePreviewPdf
   } = usePdf(id, localFile);
 
+  const navigate = useNavigate();
+
   // file input handler for new PDF uploads
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
@@ -50,8 +52,8 @@ const EditPdf = () => {
       return;
     }
     try {
-      const newPdf = await uploadPdf(localFile);
-      window.location.href = `/edit/${newPdf._id}`;
+      await uploadPdf(localFile);
+      navigate("/");
     } catch (error) {
       alert("Failed to upload PDF.", error);
     }
