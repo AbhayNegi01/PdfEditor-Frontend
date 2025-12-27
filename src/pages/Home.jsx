@@ -91,8 +91,8 @@ const Home = () => {
                 </span>
               </div>
 
-              <div className='flex items-center text-sm text-gray-600 mb-5 gap-2'>
-                <BsCalendar3 />
+              <div className='flex items-center text-sm text-gray-600 mb-5 gap-2.5'>
+                <BsCalendar3 className='ml-1' />
                 <span className='font-normal'>
                   Uploaded: {formatDateAndTime(pdf.createdAt)}
                 </span>

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FaHome, FaFilePdf, FaSlack } from "react-icons/fa";
+import { FaHome, FaFilePdf } from "react-icons/fa";
 
 const Header = () => {
   return (
@@ -13,7 +13,7 @@ const Header = () => {
               className="flex items-center gap-2 hover:opacity-60 transition-all"
             >
               <div className="flex items-center justify-center size-9 rounded-lg">
-                <FaSlack className="w-6 h-6"/>
+                <img src="./logo.png" alt="Logo" className="w-6 h-6"/>
               </div>
               <h1 className="text-2xl font-bold text-blue-400">Pdf<span className='text-white'>Ease</span></h1>
             </Link>

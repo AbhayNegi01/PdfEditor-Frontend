@@ -3,6 +3,7 @@ import Footer from "./footer/Footer.jsx";
 import Button from "./Button.jsx";
 import InputFields from "./InputFields.jsx";
 import PdfViewer from "./PdfViewer.jsx";
+import PreviewModal from "./PreviewModal.jsx";
 
 export {
   Header,
@@ -10,4 +11,5 @@ export {
   Button,
   InputFields,
   PdfViewer,
+  PreviewModal
 }
